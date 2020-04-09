@@ -11,6 +11,12 @@ const GET_LOGO = gql`
             text
             color
             fontSize
+            backgroundColor
+            borderColor
+            borderRadius
+            borderWidth
+            padding
+            margin
             lastUpdate
         }
     }
@@ -43,7 +49,7 @@ class ViewLogoScreen extends Component {
                                     </h3>
                                 </div>
                                 <div className="row">
-                                    
+
                                     <div className="panel-body">
                                         <dl>
                                             <dt>Text:</dt>
@@ -52,6 +58,18 @@ class ViewLogoScreen extends Component {
                                             <dd>{data.logo.color}</dd>
                                             <dt>Font Size:</dt>
                                             <dd>{data.logo.fontSize}</dd>
+                                            <dt>Background Color:</dt>
+                                            <dd>{data.logo.backgroundColor}</dd>
+                                            <dt>Border Color:</dt>
+                                            <dd>{data.logo.borderColor}</dd>
+                                            <dt>Border Radius:</dt>
+                                            <dd>{data.logo.borderRadius}</dd>
+                                            <dt>Border Width:</dt>
+                                            <dd>{data.logo.borderWidth}</dd>
+                                            <dt>Padding:</dt>
+                                            <dd>{data.logo.padding}</dd>
+                                            <dt>Margin:</dt>
+                                            <dd>{data.logo.margin}</dd>
                                             <dt>Last Updated:</dt>
                                             <dd>{data.logo.lastUpdate}</dd>
                                         </dl>
@@ -78,13 +96,13 @@ class ViewLogoScreen extends Component {
                                         <div style={{
                                             color: data.logo.color,
                                             fontSize: data.logo.fontSize + "pt",
-                                            backgroundColor: "data.logo.",
-                                            borderColor: "data.logo.",
-                                            borderRadius: "data.logo." + "pt",
-                                            borderWidth: "data.logo." + "pt",
+                                            backgroundColor: data.logo.backgroundColor,
+                                            borderColor: data.logo.borderColor,
+                                            borderRadius: data.logo.borderRadius + "pt",
+                                            borderWidth: data.logo.borderWidth + "pt",
                                             borderStyle: "solid",
-                                            padding: "data.logo." + "pt",
-                                            margin: "data.logo." + "pt",
+                                            padding: data.logo.padding + "pt",
+                                            margin: data.logo.margin + "pt",
                                             overflow: 'auto',
                                             position: 'absolute',
                                         }}>

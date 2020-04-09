@@ -10,6 +10,12 @@ const GET_LOGO = gql`
             text
             color
             fontSize
+            backgroundColor
+            borderColor
+            borderRadius
+            borderWidth
+            padding
+            margin
         }
     }
 `;
@@ -19,12 +25,24 @@ const UPDATE_LOGO = gql`
         $id: String!,
         $text: String!,
         $color: String!,
-        $fontSize: Int!) {
+        $fontSize: Int!,
+        $backgroundColor: String!,
+        $borderColor: String!,
+        $borderRadius: Int!,
+        $borderWidth: Int!,
+        $padding: Int!,
+        $margin: Int!) {
             updateLogo(
                 id: $id,
                 text: $text,
                 color: $color,
-                fontSize: $fontSize) {
+                fontSize: $fontSize,
+                backgroundColor: $backgroundColor,
+                borderColor: $borderColor,
+                borderRadius: $borderRadius,
+                borderWidth: $borderWidth,
+                padding: $padding,
+                margin: $margin) {
                     lastUpdate
                 }
         }
@@ -33,7 +51,7 @@ const UPDATE_LOGO = gql`
 class EditLogoScreen extends Component {
 
     render() {
-        let text, color, fontSize;
+        let text, color, fontSize, backgroundColor, borderColor, borderRadius, borderWidth, padding, margin;
         return (
             <Query query={GET_LOGO} variables={{ logoId: this.props.match.params.id }}>
                 {({ loading, error, data }) => {
@@ -51,13 +69,31 @@ class EditLogoScreen extends Component {
                                                 Edit Logo
                                         </h3>
                                         </div>
-                                        <div className="panel-body">                                            
+                                        <div className="panel-body">
                                             <form onSubmit={e => {
                                                 e.preventDefault();
-                                                updateLogo({ variables: { id: data.logo._id, text: text.value, color: color.value, fontSize: parseInt(fontSize.value) } });
+                                                updateLogo({
+                                                    variables: {
+                                                        text: text.value,
+                                                        color: color.value,
+                                                        fontSize: parseInt(fontSize.value),
+                                                        backgroundColor: backgroundColor.value,
+                                                        borderColor: borderColor.value,
+                                                        borderRadius: parseInt(borderRadius.value),
+                                                        borderWidth: parseInt(borderWidth.value),
+                                                        padding: parseInt(padding.value),
+                                                        margin: parseInt(margin.value)
+                                                    }
+                                                });
                                                 text.value = "";
                                                 color.value = "";
                                                 fontSize.value = "";
+                                                backgroundColor.value = "";
+                                                borderColor.value = "";
+                                                borderRadius.value = "";
+                                                borderWidth.value = "";
+                                                padding.value = "";
+                                                margin.value = "";
                                             }}>
                                                 <div className="form-group">
                                                     <label htmlFor="text">Text:</label>
@@ -76,6 +112,42 @@ class EditLogoScreen extends Component {
                                                     <input type="text" className="form-control" name="fontSize" ref={node => {
                                                         fontSize = node;
                                                     }} placeholder="Font Size" defaultValue={data.logo.fontSize} />
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="backgroundColor">Background Color:</label>
+                                                    <input type="color" className="form-control" name="backgroundColor" ref={node => {
+                                                        backgroundColor = node;
+                                                    }} placeholder="Background Color" defaultValue={data.logo.backgroundColor} />
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="borderColor">Border Color:</label>
+                                                    <input type="color" className="form-control" name="borderColor" ref={node => {
+                                                        borderColor = node;
+                                                    }} placeholder="Border Color" defaultValue={data.logo.borderColor} />
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="borderRadius">Border Radius:</label>
+                                                    <input type="number" className="form-control" name="borderRadius" ref={node => {
+                                                        borderRadius = node;
+                                                    }} placeholder="Border Radius" defaultValue={data.logo.borderRadius} />
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="borderWidth">Border Width:</label>
+                                                    <input type="number" className="form-control" name="borderWidth" ref={node => {
+                                                        borderWidth = node;
+                                                    }} placeholder="Border Width" defaultValue={data.logo.borderWidth} />
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="padding">Padding:</label>
+                                                    <input type="number" className="form-control" name="padding" ref={node => {
+                                                        padding = node;
+                                                    }} placeholder="Padding" defaultValue={data.logo.padding} />
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="margin">Margin:</label>
+                                                    <input type="number" className="form-control" name="margin" ref={node => {
+                                                        margin = node;
+                                                    }} placeholder="Margin" defaultValue={data.logo.margin} />
                                                 </div>
                                                 <button type="submit" className="btn btn-success">Submit</button>
                                             </form>
