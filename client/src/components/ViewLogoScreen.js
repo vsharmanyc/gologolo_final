@@ -42,33 +42,56 @@ class ViewLogoScreen extends Component {
                                         View Logo
                                     </h3>
                                 </div>
-                                <div className="panel-body">
-                                    <dl>
-                                        <dt>Text:</dt>
-                                        <dd>{data.logo.text}</dd>
-                                        <dt>Color:</dt>
-                                        <dd>{data.logo.color}</dd>
-                                        <dt>Font Size:</dt>
-                                        <dd>{data.logo.fontSize}</dd>
-                                        <dt>Last Updated:</dt>
-                                        <dd>{data.logo.lastUpdate}</dd>
-                                    </dl>
-                                    <Mutation mutation={DELETE_LOGO} key={data.logo._id} onCompleted={() => this.props.history.push('/')}>
-                                        {(removeLogo, { loading, error }) => (
-                                            <div>
-                                                <form
-                                                    onSubmit={e => {
-                                                        e.preventDefault();
-                                                        removeLogo({ variables: { id: data.logo._id } });
-                                                    }}>
-                                                    <Link to={`/edit/${data.logo._id}`} className="btn btn-success">Edit</Link>&nbsp;
+                                <div className="row">
+                                    
+                                    <div className="panel-body">
+                                        <dl>
+                                            <dt>Text:</dt>
+                                            <dd>{data.logo.text}</dd>
+                                            <dt>Color:</dt>
+                                            <dd>{data.logo.color}</dd>
+                                            <dt>Font Size:</dt>
+                                            <dd>{data.logo.fontSize}</dd>
+                                            <dt>Last Updated:</dt>
+                                            <dd>{data.logo.lastUpdate}</dd>
+                                        </dl>
+
+                                        <Mutation mutation={DELETE_LOGO} key={data.logo._id} onCompleted={() => this.props.history.push('/')}>
+                                            {(removeLogo, { loading, error }) => (
+                                                <div>
+                                                    <form
+                                                        onSubmit={e => {
+                                                            e.preventDefault();
+                                                            removeLogo({ variables: { id: data.logo._id } });
+                                                        }}>
+                                                        <Link to={`/edit/${data.logo._id}`} className="btn btn-success">Edit</Link>&nbsp;
                                                 <button type="submit" className="btn btn-danger">Delete</button>
-                                                </form>
-                                                {loading && <p>Loading...</p>}
-                                                {error && <p>Error :( Please try again</p>}
-                                            </div>
-                                        )}
-                                    </Mutation>
+                                                    </form>
+                                                    {loading && <p>Loading...</p>}
+                                                    {error && <p>Error :( Please try again</p>}
+                                                </div>
+                                            )}
+                                        </Mutation>
+                                    </div>
+
+                                    <div className="col s8">
+                                        <div style={{
+                                            color: data.logo.color,
+                                            fontSize: data.logo.fontSize + "pt",
+                                            backgroundColor: "data.logo.",
+                                            borderColor: "data.logo.",
+                                            borderRadius: "data.logo." + "pt",
+                                            borderWidth: "data.logo." + "pt",
+                                            borderStyle: "solid",
+                                            padding: "data.logo." + "pt",
+                                            margin: "data.logo." + "pt",
+                                            overflow: 'auto',
+                                            position: 'absolute',
+                                        }}>
+                                            {data.logo.text}
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
