@@ -20,6 +20,8 @@ class HomeScreen extends Component {
         return (
             <Query pollInterval={500} query={GET_LOGOS}>
                 {({ loading, error, data }) => {
+                    if(data.logos != undefined)
+                        data.logos.sort((a,b) => new Date(b.lastUpdate) - new Date(a.lastUpdate));
                     if (loading) return 'Loading...';
                     if (error) return `Error! ${error.message}`;
 

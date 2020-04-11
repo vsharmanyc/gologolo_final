@@ -74,6 +74,7 @@ class EditLogoScreen extends Component {
                                                 e.preventDefault();
                                                 updateLogo({
                                                     variables: {
+                                                        id: data.logo._id,
                                                         text: text.value,
                                                         color: color.value,
                                                         fontSize: parseInt(fontSize.value),
