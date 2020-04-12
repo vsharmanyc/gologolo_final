@@ -51,11 +51,14 @@ body {
 
 #recent_work_heading {
   margin-top: 5%;
+  margin-bottom: 5%;
   font-size: 24pt;
   font-weight: bold;
 }
 
 .home_work_link {
+  margin-bottom: 2%;
+  display: inline-block;
   cursor: pointer;
   color: var(--swatch-boundary);
   text-decoration: none;
