@@ -68,3 +68,30 @@ body {
   color: var(--swatch-accent);
   font-weight: bold;
 }
+
+#work_body_container {
+  background-color: var(--swatch-primary);
+}
+
+#properties_container {
+  background-color: var(--swatch-accent);
+}
+
+dl dd{
+  color: white;
+}
+
+.home_link_container {
+  padding: 1%;
+  background-color: var(--swatch-complement);
+  width: 100%;
+}
+
+.home_link{
+  font-weight: bold;
+  color: var(--swatch_contrast);
+}
+
+.home_link:hover {
+  color: var(--swatch-accent);
+}

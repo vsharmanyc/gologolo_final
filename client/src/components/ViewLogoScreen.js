@@ -42,26 +42,23 @@ class ViewLogoScreen extends Component {
                     return (
                         <div className="container">
                             <div className="panel panel-default">
-                                <div className="panel-heading">
-                                    <h4><Link to="/">Home</Link></h4>
-                                    <h3 className="panel-title">
-                                        View Logo
-                                    </h3>
-                                </div>
-                                <div className="row">
+
+                                <div className="row" id="work_body_container">
+                                    <h4 className="container" class="home_link_container"><Link to="/" class="home_link">GoLogoLo Home</Link></h4>
+                                    <h3 className="container">View Logo</h3>
 
                                     <div className="panel-body">
-                                        <dl>
+                                        <dl className="container" id="properties_container">
                                             <dt>Text:</dt>
                                             <dd>{data.logo.text.replace(/\s/g, '\u00A0')}</dd>
                                             <dt>Color:</dt>
-                                            <dd>{data.logo.color}</dd>
+                                            <dd><input type="color" value={data.logo.color} disabled />{" " + data.logo.color}</dd>
                                             <dt>Font Size:</dt>
                                             <dd>{data.logo.fontSize}</dd>
                                             <dt>Background Color:</dt>
-                                            <dd>{data.logo.backgroundColor}</dd>
+                                            <dd><input type="color" value={data.logo.backgroundColor} disabled />{" " + data.logo.backgroundColor}</dd>
                                             <dt>Border Color:</dt>
-                                            <dd>{data.logo.borderColor}</dd>
+                                            <dd><input type="color" value={data.logo.borderColor} disabled />{" " + data.logo.borderColor}</dd>
                                             <dt>Border Radius:</dt>
                                             <dd>{data.logo.borderRadius}</dd>
                                             <dt>Border Width:</dt>
