@@ -53,7 +53,7 @@ class ViewLogoScreen extends Component {
                                     <div className="panel-body">
                                         <dl>
                                             <dt>Text:</dt>
-                                            <dd>{data.logo.text}</dd>
+                                            <dd>{data.logo.text.replace(/\s/g, '\u00A0')}</dd>
                                             <dt>Color:</dt>
                                             <dd>{data.logo.color}</dd>
                                             <dt>Font Size:</dt>

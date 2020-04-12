@@ -20,7 +20,7 @@ class HomeScreen extends Component {
         return (
             <Query pollInterval={500} query={GET_LOGOS}>
                 {({ loading, error, data }) => {
-                    if(data.logos != undefined)
+                    if(data.logos !== undefined)
                         data.logos.sort((a,b) => new Date(b.lastUpdate) - new Date(a.lastUpdate));
                     if (loading) return 'Loading...';
                     if (error) return `Error! ${error.message}`;
@@ -32,7 +32,7 @@ class HomeScreen extends Component {
                                 {data.logos.map((logo, index) => (
                                     <div key={index} className='home_logo_link'
                                         style={{ cursor: "pointer" }}>
-                                        <Link to={`/view/${logo._id}`}>{logo.text}</Link>
+                                        <Link to={`/view/${logo._id}`}>{logo.text.replace(/\s/g, '\u00A0')}</Link>
                                     </div>
                                 ))}
                             </div>
