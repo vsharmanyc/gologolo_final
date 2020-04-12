@@ -100,7 +100,7 @@ class CreateLogoScreen extends Component {
                                             <div className="container" id="properties_container">
                                                 <div className="form-group">
                                                     <label htmlFor="text">Text:</label>
-                                                    <input type="text" className="form-control" name="text" ref={node => {
+                                                    <input type="text" className="form-control" name="text" required pattern='.*[^\s].*' ref={node => {
                                                         text = node;
                                                     }} placeholder="Text" defaultValue={this.state.text} onChange={this.updateLogoView} />
                                                 </div>

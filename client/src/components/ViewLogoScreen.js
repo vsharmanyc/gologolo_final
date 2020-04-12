@@ -103,7 +103,7 @@ class ViewLogoScreen extends Component {
                                             overflow: 'auto',
                                             position: 'absolute',
                                         }}>
-                                            {data.logo.text}
+                                            {data.logo.text.replace(/\s/g, '\u00A0')}
                                         </div>
                                     </div>
 
