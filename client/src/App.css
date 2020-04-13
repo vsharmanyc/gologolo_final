@@ -71,6 +71,7 @@ body {
 
 #work_body_container {
   background-color: var(--swatch-primary);
+  overflow: auto;
 }
 
 #properties_container {

@@ -37,7 +37,6 @@ class CreateLogoScreen extends Component {
         // VALUES HERE
         this.state = {
             text: "GoLogoLo Logo",
-            isValidText: true,
             color: "#FF0000",
             fontSize: 24,
             backgroundColor: "#77ffe3",
@@ -53,8 +52,6 @@ class CreateLogoScreen extends Component {
         console.log("update logo view");
         this.setState({ [event.target.name]: event.target.value });
     }
-
-
 
     render() {
         let text, color, fontSize, backgroundColor, borderColor, borderRadius, borderWidth, padding, margin;

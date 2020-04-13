@@ -58,7 +58,6 @@ class EditLogoScreen extends Component {
         this.state = {
             hasQueryData: false,
             text: "",
-            isValidText: true,
             color: "",
             fontSize: "",
             backgroundColor: "",
