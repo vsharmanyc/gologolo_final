@@ -33,6 +33,11 @@ body {
   padding-bottom: 5%;
 }
 
+#sign_in {
+  background-color: #f7f6f6;
+  padding: 5%
+}
+
 #home_screen_container {
   background-color: var(--swatch-primary);
   margin-top: 2%;
