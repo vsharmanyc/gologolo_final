@@ -16,6 +16,7 @@ const GET_LOGOS = gql`
 
 class SignInScreen extends Component {
 
+
     render() {
         return (
 
