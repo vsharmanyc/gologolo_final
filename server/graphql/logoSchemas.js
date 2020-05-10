@@ -5,6 +5,7 @@ var GraphQLObjectType = require('graphql').GraphQLObjectType;
 var GraphQLNonNull = require('graphql').GraphQLNonNull;
 var GraphQLID = require('graphql').GraphQLID;
 var GraphQLString = require('graphql').GraphQLString;
+var GraphQLBoolean = require('graphql').GraphQLBoolean;
 var GraphQLInt = require('graphql').GraphQLInt;
 var GraphQLDate = require('graphql-date');
 var LogoModel = require('../models/Logo');
@@ -57,6 +58,9 @@ var logoType = new GraphQLObjectType({
             _id: {
                 type: GraphQLString
             },
+            workName: {
+                type: GraphQLString
+            },
             images: {
                 type: new GraphQLList(imageType)
             },
@@ -98,6 +102,9 @@ var userType = new GraphQLObjectType({
             },
             password: {
                 type: GraphQLString
+            },            
+            signedIn: {
+                type: GraphQLBoolean
             },
             logos: {
                 type: new GraphQLList(logoType)
@@ -183,6 +190,7 @@ var textInput = new GraphQLInputObjectType({
 var logoInput = new GraphQLInputObjectType({
     name: 'logoInput',
     fields: {
+        workName: { type: new GraphQLNonNull(GraphQLString) },
         images: { type: new GraphQLNonNull(new GraphQLList(imageInput))},
         texts: { type: new GraphQLNonNull(new GraphQLList(textInput))},
         backgroundColor: { type: new GraphQLNonNull(GraphQLString) },
@@ -206,6 +214,9 @@ var mutation = new GraphQLObjectType({
                     },
                     password: {
                         type: new GraphQLNonNull(GraphQLString)
+                    },
+                    signedIn: {
+                        type: new GraphQLNonNull(GraphQLBoolean)
                     }
                 },
                 resolve: function (root, params) {
@@ -237,6 +248,39 @@ var mutation = new GraphQLObjectType({
                         throw new Error('Error');
                     }
                     return newLogo
+                }
+            },
+            updateSignedIn: {
+                type: userType,
+                args: {
+                    email: {
+                        type: new GraphQLNonNull(GraphQLString)
+                    },
+                    signedIn: {
+                        type: new GraphQLNonNull(GraphQLBoolean)
+                    }
+                },
+                resolve(root, params) {
+                    return LogoModel.findOneAndUpdate({'email': params.email}, { 
+                        signedIn: params.signedIn
+                    }, {new: true}, (err, data) => {
+                        if (err) return next(err);
+                    });
+                }
+            },
+            removeUser: {
+                type: userType,
+                args: {
+                    email: {
+                        type: new GraphQLNonNull(GraphQLString)
+                    }
+                },
+                resolve(root, params) {
+                    const remUser = LogoModel.findOneAndRemove({'email': params.email}).exec();
+                    if (!remUser) {
+                        throw new Error('Error')
+                    }
+                    return remUser;
                 }
             }
         }

@@ -3,8 +3,10 @@ var mongoose = require('mongoose');
 var LogoSchema = new mongoose.Schema({
   email: String,
   password: String,
+  signedIn: Boolean,
   logos: [{
     id: String,
+    workName: String,
     images: [{
       link: String,
       x: Number,

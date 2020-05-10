@@ -13,8 +13,8 @@ const GET_USERS = gql`
 `;
 
 const ADD_USER = gql`
-  mutation addUser($email: String!, $password: String!) {
-    addUser(email: $email, password: $password) {
+  mutation addUser($email: String!, $password: String!, $signedIn: Boolean!) {
+    addUser(email: $email, password: $password, signedIn: $signedIn) {
       email
     }
   }
@@ -54,15 +54,16 @@ class SignUpScreen extends Component {
                         <Mutation mutation={ADD_USER} >
                             {(addUser, { loading, error, data }) => {
                                 if (data) {
+                                    console.log("email is : " + email.value);
                                     this.props.history.push({
                                         pathname: '/home',
                                         state: { screenName: "SignUpScreen" },
-                                        others: { email: email }
+                                        others: { email: email.value }
                                     });
                                 }
 
                                 return (
-                                    <div className="container" id="home_screen_container">
+                                    <div className="container" id="user_enter_container">
                                         <div className="container row">
                                             <div className="col s4">
                                                 <h3 id="recent_work_heading">Sign Up</h3>
@@ -80,14 +81,12 @@ class SignUpScreen extends Component {
                                                                     addUser({
                                                                         variables: {
                                                                             email: emailVal,
-                                                                            password: hash
+                                                                            password: hash,
+                                                                            signedIn: true
                                                                         }
                                                                     });
                                                                 })
                                                             });
-
-                                                            email.value = "";
-                                                            password.value = "";
                                                         }
                                                         else {
                                                             this.setUserExistsErrorMsg(!isNewUser ? email.value + " is already a user" : "");

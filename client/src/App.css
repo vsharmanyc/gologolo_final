@@ -38,9 +38,14 @@ body {
   padding: 5%
 }
 
-#home_screen_container {
+#user_enter_container {
   background-color: var(--swatch-primary);
   margin-top: 2%;
+  padding-bottom: 2%;
+}
+
+#home_screen_container {
+  background-color: var(--swatch-primary);
   padding-bottom: 2%;
 }
 
