@@ -55,7 +55,7 @@ class HomeScreen extends Component {
 
     render() {
         if (!this.props.location.others)
-            this.props.history.push("/");
+            this.props.history.push("/SignIn");
 
         return (!this.props.location.others ? <></> :
             <Mutation mutation={UPDATE_SIGNEDIN}>
@@ -63,7 +63,7 @@ class HomeScreen extends Component {
                     console.log(data);
                     if (data) {
                         this.props.history.push({
-                            pathname: '/',
+                            pathname: '/SignIn',
                             state: { screenName: "HomeScreen" },
                             others: { email: this.props.location.others.email }
                         });
@@ -83,11 +83,11 @@ class HomeScreen extends Component {
                                     <div>
 
                                         <div >
-                                            <div className="container" style={{padding:"3px", backgroundColor: "#9aa036", borderColor: "black", marginTop:"2%" }}>
+                                            <div className="container" style={{ padding: "3px", backgroundColor: "#9aa036", borderColor: "black", marginTop: "2%" }}>
                                                 <div className="container row">
                                                     <div className="col s4"><h3><strong>GoLogoLo</strong></h3></div>
                                                     <div className="col s8" class="dropdown">
-                                                        <button class="btn btn-primary dropdown-toggle" style={{backgroundColor: "#c1c85b", color:"black", borderColor:"black"}} type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded={this.state.dropDownOpen}
+                                                        <button class="btn btn-primary dropdown-toggle" style={{ backgroundColor: "#c1c85b", color: "black", borderColor: "black" }} type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded={this.state.dropDownOpen}
                                                             onClick={this.toggleDropDown} >
                                                             {this.props.location.others.email}
                                                         </button>
@@ -124,7 +124,11 @@ class HomeScreen extends Component {
                                                             GoLogoLo
                                                     </div>
                                                         <div>
-                                                            <Link id="add_logo_button" to="/create"><button id="new_logo_button">Create New Logo</button></Link>
+                                                            <Link id="add_logo_button" to={{
+                                                                pathname: '/Create',
+                                                                state: { screenName: "HomeScreen" },
+                                                                others: { email: this.props.location.others.email }
+                                                            }}><button id="new_logo_button">Create New Logo</button></Link>
                                                         </div>
                                                     </div>
                                                 </div>

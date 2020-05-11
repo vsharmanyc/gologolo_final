@@ -56,7 +56,7 @@ class SignUpScreen extends Component {
                                 if (data) {
                                     console.log("email is : " + email.value);
                                     this.props.history.push({
-                                        pathname: '/home',
+                                        pathname: '/',
                                         state: { screenName: "SignUpScreen" },
                                         others: { email: email.value }
                                     });

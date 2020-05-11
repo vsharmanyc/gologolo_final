@@ -4,26 +4,8 @@ import { Mutation } from "react-apollo";
 import { Link } from 'react-router-dom';
 
 const ADD_LOGO = gql`
-    mutation AddLogo(
-        $text: String!,
-        $color: String!,
-        $fontSize: Int!,
-        $backgroundColor: String!,
-        $borderColor: String!,
-        $borderRadius: Int!,
-        $borderWidth: Int!,
-        $padding: Int!,
-        $margin: Int!) {
-        addLogo(
-            text: $text,
-            color: $color,
-            fontSize: $fontSize,
-            backgroundColor: $backgroundColor,
-            borderColor: $borderColor,
-            borderRadius: $borderRadius,
-            borderWidth: $borderWidth,
-            padding: $padding,
-            margin: $margin) {
+    mutation addLogo($email: String!,$logo: logoInput!){
+        addLogo(email: $email, logo: $logo) {
             _id
         }
     }
@@ -81,10 +63,9 @@ class CreateLogoScreen extends Component {
 
     addText = (event) => {
         let textProps = this.state.texts;
-        textProps.push({ text: this.state.text, color: this.state.color, fontSize: this.state.fontSize });
+        textProps.push({ text: this.state.text, color: this.state.color, fontSize: this.state.fontSize, x: 0, y: 0 });
         this.setState({ texts: textProps, text: "", color: "#000000", fontSize: "", selectedTextKey: -1 });
         this.forceUpdate();
-
     }
 
     deleteText = (event) => {
@@ -152,6 +133,9 @@ class CreateLogoScreen extends Component {
 
 
     render() {
+        if (!this.props.location.others)
+            this.props.history.push("/SignIn");
+
         let image, text, color, fontSize, backgroundColor, borderColor, borderRadius, borderWidth, padding, margin;
         console.log(this.state);
         return (
@@ -164,23 +148,32 @@ class CreateLogoScreen extends Component {
                             <div className="panel panel-default">
 
                                 <div className="row" id="work_body_container">
-                                    <h4 className="container" class="home_link_container"><Link to="/" class="home_link">GoLogoLo Home</Link></h4>
+                                    <h4 className="container" class="home_link_container"><Link to={{
+                                        pathname: '/',
+                                        state: { screenName: "CreateLogoScreen" },
+                                        others: { email: this.props.location.others.email }
+                                    }} class="home_link">GoLogoLo Home</Link></h4>
                                     <h3 className="container">Create Logo</h3>
 
                                     <div className="panel-body">
                                         <form onSubmit={e => {
                                             e.preventDefault();
+                                            let workName = "";
+                                            this.state.texts.forEach((textObject) => { workName += textObject.text });
                                             addLogo({
                                                 variables: {
-                                                    text: text.value,
-                                                    color: color.value,
-                                                    fontSize: parseInt(fontSize.value),
-                                                    backgroundColor: backgroundColor.value,
-                                                    borderColor: borderColor.value,
-                                                    borderRadius: parseInt(borderRadius.value),
-                                                    borderWidth: parseInt(borderWidth.value),
-                                                    padding: parseInt(padding.value),
-                                                    margin: parseInt(margin.value)
+                                                    email: this.props.location.others.email,
+                                                    logo: {
+                                                        workName: workName,
+                                                        texts: this.state.texts,
+                                                        images: this.state.images,
+                                                        backgroundColor: backgroundColor.value,
+                                                        borderColor: borderColor.value,
+                                                        borderRadius: parseInt(borderRadius.value),
+                                                        borderWidth: parseInt(borderWidth.value),
+                                                        padding: parseInt(padding.value),
+                                                        margin: parseInt(margin.value)
+                                                    }
                                                 }
                                             });
                                             image.value = ""
@@ -227,7 +220,7 @@ class CreateLogoScreen extends Component {
                                                         <label htmlFor="image">Image:</label>
                                                         <input type="url" className="form-control" name="link" ref={node => {
                                                             image = node;
-                                                        }} placeholder="Text" value={this.state.imageLink} onChange={this.imageLinkChange} />
+                                                        }} placeholder="Image Link" value={this.state.imageLink} onChange={this.imageLinkChange} />
                                                     </div>
                                                     <div style={{ display: "inline-block" }}>
                                                         <button disabled={this.state.selectedImageKey === -1} onClick={this.deselectImage}>deselect</button>

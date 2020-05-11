@@ -282,6 +282,20 @@ var mutation = new GraphQLObjectType({
                     }
                     return remUser;
                 }
+            },
+            addLogo: {
+                type: logoType,
+                args: {
+                    email: {
+                        type: new GraphQLNonNull(GraphQLString)
+                    },
+                    logo: {
+                        type: new GraphQLNonNull(logoInput)
+                    }
+                },
+                resolve(root, params){
+                    return LogoModel.findOneAndUpdate({'email': params.email}, {'$push': {'logos': params.logo}});
+                }
             }
         }
     }
