@@ -86,6 +86,20 @@ body {
 
 #properties_container {
   background-color: var(--swatch-accent);
+  overflow: auto;
+  padding-top: 1px;
+  margin-top: -1px;
+
+}
+
+
+#group_properties_container {
+  background-color: #a1cea1;
+  border-radius: 10px;
+  text-align: center;
+  padding: 3%; 
+  margin-top: 2%;
+  margin-bottom: 3%;
 }
 
 dl dd{
