@@ -54,24 +54,24 @@ class HomeScreen extends Component {
     }
 
     render() {
-        if (!this.props.location.others)
+        let email = localStorage.getItem('signedInUser');
+        if (!email)
             this.props.history.push("/SignIn");
 
-        return (!this.props.location.others ? <></> :
+        return (!email ? <></> :
             <Mutation mutation={UPDATE_SIGNEDIN}>
                 {(updateSignedIn, { loading, error, data }) => {
                     console.log(data);
                     if (data) {
                         this.props.history.push({
                             pathname: '/SignIn',
-                            state: { screenName: "HomeScreen" },
-                            others: { email: this.props.location.others.email }
+                            state: { screenName: "HomeScreen" }
                         });
                     }
 
                     return (
 
-                        <Query pollInterval={500} query={GET_LOGOS} variables={{ email: this.props.location.others.email }}>
+                        <Query pollInterval={500} query={GET_LOGOS} variables={{ email: email }}>
                             {({ loading, error, data }) => {
                                 console.log(data);
                                 if (data.user)
@@ -89,13 +89,14 @@ class HomeScreen extends Component {
                                                     <div className="col s8" class="dropdown">
                                                         <button class="btn btn-primary dropdown-toggle" style={{ backgroundColor: "#c1c85b", color: "black", borderColor: "black" }} type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded={this.state.dropDownOpen}
                                                             onClick={this.toggleDropDown} >
-                                                            {this.props.location.others.email}
+                                                            {email}
                                                         </button>
                                                         <div class={this.state.dropDownOpen ? "dropdown-menu show" : "dropdown-menu"} aria-labelledby="dropdownMenuButton">
                                                             <a class="dropdown-item" href="#" onClick={(e) => {
+                                                                localStorage.removeItem('signedInUser');
                                                                 updateSignedIn({
                                                                     variables: {
-                                                                        email: this.props.location.others.email,
+                                                                        email: email,
                                                                         signedIn: false
                                                                     }
                                                                 });
@@ -115,7 +116,10 @@ class HomeScreen extends Component {
                                                         {data.user.logos.map((logo, index) => (
                                                             <div key={index} className='home_logo_link'
                                                                 style={{ cursor: "pointer" }}>
-                                                                <Link to={`/view/${logo._id}`} class="home_work_link">{logo.workName.replace(/\s/g, '\u00A0')}</Link>
+                                                                <Link to={{
+                                                                    pathname: `/view/${logo._id}`,
+                                                                    state: { screenName: "HomeScreen" }
+                                                                }} class="home_work_link">{logo.workName.replace(/\s/g, '\u00A0')}</Link>
                                                             </div>
                                                         ))}
                                                     </div>
@@ -126,8 +130,7 @@ class HomeScreen extends Component {
                                                         <div>
                                                             <Link id="add_logo_button" to={{
                                                                 pathname: '/Create',
-                                                                state: { screenName: "HomeScreen" },
-                                                                others: { email: this.props.location.others.email }
+                                                                state: { screenName: "HomeScreen" }
                                                             }}><button id="new_logo_button">Create New Logo</button></Link>
                                                         </div>
                                                     </div>

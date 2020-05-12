@@ -144,23 +144,17 @@ var queryType = new GraphQLObjectType({
                 }
             },
             logo: {
-                type: logoType,
+                type: userType,
                 args: {
                     email: {
-                        name: 'email',
-                        type: GraphQLString
+                        type: new GraphQLNonNull(GraphQLString)
                     },
-                    id: {
-                        name: "_id",
-                        type: GraphQLString
+                    logoId: {
+                        type: new GraphQLNonNull(GraphQLString)
                     }
                 },
-                resolve: function(root, params) { 
-                    const logoDetails = LogoModel.findOne({'email': params.email}, 'logos').where({"_id": params.id}).exec()
-                    if (!logoDetails) {
-                        throw new Error('Error')
-                    }
-                    return logoDetails
+                resolve(root, params){
+                    return LogoModel.findOne({email: params.email}, {logos:{ $elemMatch: { '_id' : params.logoId}}});
                 }
             }
         }
@@ -284,7 +278,7 @@ var mutation = new GraphQLObjectType({
                 }
             },
             addLogo: {
-                type: logoType,
+                type: userType,
                 args: {
                     email: {
                         type: new GraphQLNonNull(GraphQLString)
@@ -294,7 +288,7 @@ var mutation = new GraphQLObjectType({
                     }
                 },
                 resolve(root, params){
-                    return LogoModel.findOneAndUpdate({'email': params.email}, {'$push': {'logos': params.logo}});
+                    return LogoModel.findOneAndUpdate({'email': params.email}, {'$push': {'logos': params.logo}}, {new: true});
                 }
             }
         }

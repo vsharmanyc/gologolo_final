@@ -36,16 +36,18 @@ class SignInScreen extends Component {
 
 
     render() {
+        if (localStorage.getItem('signedInUser'))
+            this.props.history.push("/");
         let email, password;
         return (
             <Mutation mutation={UPDATE_SIGNEDIN}>
                 {(updateSignedIn, { loading, error, data }) => {
                     console.log(data);
                     if(data){
+                        localStorage.setItem('signedInUser', this.state.email);
                         this.props.history.push({
                             pathname: '/',
-                            state: { screenName: "SignInScreen" },
-                            others: { email: this.state.email }
+                            state: { screenName: "SignInScreen" }
                         });
                     }
 
@@ -82,13 +84,13 @@ class SignInScreen extends Component {
                                                             <label for="exampleInputEmail1">Email address</label>
                                                             <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required
                                                                 ref={node => { email = node; }} />
-                                                            {this.state.email !== "" && !data.user && !loading ? <p style={{ color: "red" }}>{this.state.email + " is not a user"}</p> : ""}
+                                                            {this.state.email !== "" && !loading && !error && !data.user ? <p style={{ color: "red" }}>{this.state.email + " is not a user"}</p> : ""}
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="exampleInputPassword1">Password</label>
                                                             <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required
                                                                 ref={node => { password = node; }} />
-                                                            {this.state.email !== "" && data.user && !loading ? <p style={{ color: "red" }}>{"Incorrect password"}</p> : ""}
+                                                            {this.state.email !== "" && !loading && !error && data.user ? <p style={{ color: "red" }}>{"Incorrect password"}</p> : ""}
                                                         </div>
                                                         <button type="submit" class="btn btn-primary">Submit</button>
                                                         <div style={{ marginTop: '2%' }}>

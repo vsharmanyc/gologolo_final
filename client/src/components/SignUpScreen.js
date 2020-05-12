@@ -42,6 +42,8 @@ class SignUpScreen extends Component {
     }
 
     render() {
+        if (localStorage.getItem('signedInUser'))
+            this.props.history.push("/");
         let email, password, users;
         return (
             <Query pollInterval={500} query={GET_USERS}>
@@ -55,10 +57,10 @@ class SignUpScreen extends Component {
                             {(addUser, { loading, error, data }) => {
                                 if (data) {
                                     console.log("email is : " + email.value);
+                                    localStorage.setItem('signedInUser', this.state.email);
                                     this.props.history.push({
                                         pathname: '/',
-                                        state: { screenName: "SignUpScreen" },
-                                        others: { email: email.value }
+                                        state: { screenName: "SignUpScreen" }
                                     });
                                 }
 

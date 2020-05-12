@@ -6,7 +6,9 @@ import { Link } from 'react-router-dom';
 const ADD_LOGO = gql`
     mutation addLogo($email: String!,$logo: logoInput!){
         addLogo(email: $email, logo: $logo) {
-            _id
+            logos{
+                _id
+            }
         }
     }
 `;
@@ -133,7 +135,8 @@ class CreateLogoScreen extends Component {
 
 
     render() {
-        if (!this.props.location.others)
+        let email = localStorage.getItem('signedInUser');
+        if (!email)
             this.props.history.push("/SignIn");
 
         let image, text, color, fontSize, backgroundColor, borderColor, borderRadius, borderWidth, padding, margin;
@@ -141,8 +144,13 @@ class CreateLogoScreen extends Component {
         return (
             <Mutation mutation={ADD_LOGO}>
                 {(addLogo, { loading, error, data }) => {
-                    if (data)
-                        this.props.history.push(`/view/${data.addLogo._id}`);
+                    if (data) {
+                        console.log(data);
+                        this.props.history.push({
+                            pathname: `/view/${data.addLogo.logos[data.addLogo.logos.length - 1]._id}`,
+                            state: { screenName: "HomeScreen" },
+                        });
+                    }
                     return (
                         <div className="container">
                             <div className="panel panel-default">
@@ -151,7 +159,6 @@ class CreateLogoScreen extends Component {
                                     <h4 className="container" class="home_link_container"><Link to={{
                                         pathname: '/',
                                         state: { screenName: "CreateLogoScreen" },
-                                        others: { email: this.props.location.others.email }
                                     }} class="home_link">GoLogoLo Home</Link></h4>
                                     <h3 className="container">Create Logo</h3>
 
@@ -162,7 +169,7 @@ class CreateLogoScreen extends Component {
                                             this.state.texts.forEach((textObject) => { workName += textObject.text });
                                             addLogo({
                                                 variables: {
-                                                    email: this.props.location.others.email,
+                                                    email: email,
                                                     logo: {
                                                         workName: workName,
                                                         texts: this.state.texts,
