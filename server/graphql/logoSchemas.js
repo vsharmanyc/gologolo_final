@@ -290,6 +290,20 @@ var mutation = new GraphQLObjectType({
                 resolve(root, params){
                     return LogoModel.findOneAndUpdate({'email': params.email}, {'$push': {'logos': params.logo}}, {new: true});
                 }
+            },
+            removeLogo: {
+                type: userType,
+                args: {
+                    email: {
+                        type: new GraphQLNonNull(GraphQLString)
+                    },
+                    logoId: {
+                        type: new GraphQLNonNull(GraphQLString)
+                    }
+                },
+                resolve(root, params){
+                    return LogoModel.update({email: params.email}, {$pull: { logos: { '_id' : params.logoId}}}).exec();
+                }
             }
         }
     }

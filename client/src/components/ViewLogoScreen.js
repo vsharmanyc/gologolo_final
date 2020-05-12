@@ -8,6 +8,7 @@ const GET_LOGO = gql`
     query logo($email: String!, $logoId: String!) {
         logo(email:$email, logoId: $logoId) {
             logos {
+                _id
                 workName
                 images{
                     link
@@ -34,9 +35,11 @@ const GET_LOGO = gql`
 `;
 
 const DELETE_LOGO = gql`
-  mutation removeLogo($id: String!) {
-    removeLogo(id:$id) {
-      _id
+  mutation removeLogo($email: String!, $logoId: String!) {
+    removeLogo(email: $email, logoId: $logoId) {
+        logos{
+            _id
+        }
     }
   }
 `;
@@ -86,15 +89,15 @@ class ViewLogoScreen extends Component {
                                             <dd>{logo.lastUpdate}</dd>
                                         </dl>
 
-                                        <Mutation mutation={DELETE_LOGO} key={data.logo._id} onCompleted={() => this.props.history.push('/')}>
+                                        <Mutation mutation={DELETE_LOGO} key={logo._id} onCompleted={() => this.props.history.push('/')}>
                                             {(removeLogo, { loading, error }) => (
                                                 <div>
                                                     <form
                                                         onSubmit={e => {
                                                             e.preventDefault();
-                                                            removeLogo({ variables: { id: data.logo._id } });
+                                                            removeLogo({ variables: { email: email, logoId: logo._id } });
                                                         }}>
-                                                        <Link to={`/edit/${data.logo._id}`} className="btn btn-success">Edit</Link>&nbsp;
+                                                        <Link to={`/edit/${logo._id}`} className="btn btn-success">Edit</Link>&nbsp;
                                                 <button type="submit" className="btn btn-danger">Delete</button>
                                                     </form>
                                                     {loading && <p>Loading...</p>}
