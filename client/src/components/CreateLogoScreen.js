@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import { Link } from 'react-router-dom';
+import Draggable, { DraggableCore } from 'react-draggable';
 
 const ADD_LOGO = gql`
     mutation addLogo($email: String!,$logo: logoInput!){
@@ -65,7 +66,7 @@ class CreateLogoScreen extends Component {
 
     addText = (event) => {
         let textProps = this.state.texts;
-        textProps.push({ text: this.state.text, color: this.state.color, fontSize:  parseInt(this.state.fontSize), x: 0, y: 0 });
+        textProps.push({ text: this.state.text, color: this.state.color, fontSize: parseInt(this.state.fontSize), x: 0, y: 0 });
         this.setState({ texts: textProps, text: "", color: "#000000", fontSize: "", selectedTextKey: -1 });
         this.forceUpdate();
     }
@@ -133,6 +134,24 @@ class CreateLogoScreen extends Component {
         this.forceUpdate();
     }
 
+    textDragStopped = (event) =>{
+        if(this.state.selectedTextKey !== -1){
+            let texts =  this.state.texts;
+            texts[this.state.selectedTextKey].x = event.x;
+            texts[this.state.selectedTextKey].y = event.y;
+            this.setState({texts: texts});
+        }
+    }
+
+    imageDragStopped = (event) =>{
+        if(this.state.selectedImageKey !== -1){
+            let images =  this.state.images;
+            images[this.state.selectedImageKey].x = event.x;
+            images[this.state.selectedImageKey].y = event.y;
+            this.setState({images: images});
+        }
+    }
+    
 
     render() {
         let email = localStorage.getItem('signedInUser');
@@ -289,20 +308,22 @@ class CreateLogoScreen extends Component {
                                             borderStyle: "solid",
                                             padding: this.state.padding + "pt",
                                             margin: this.state.margin + "pt",
-                                            overflow: 'auto',
                                             position: 'absolute',
                                         }}>
                                             {this.state.texts.map((text, index) => (
-                                                <div key={index} onClick={() => { this.textSelected(index) }}
-                                                    style={{
-                                                        color: text.color,
-                                                        fontSize: text.fontSize + "pt"
-                                                    }}>
-                                                    {text.text.replace(/\s/g, '\u00A0')}
-                                                </div>
+                                                <Draggable bounds="parent" onStop={this.textDragStopped}>
+                                                    <div key={index} onClick={() => { this.textSelected(index) }}
+                                                        style={{
+                                                            color: text.color,
+                                                            fontSize: text.fontSize + "pt",
+                                                            display:"inline-block"
+                                                        }}>
+                                                        {text.text.replace(/\s/g, '\u00A0')}
+                                                    </div></Draggable>
                                             ))}
                                             {this.state.images.map((image, index) => (
-                                                <img key={index} src={image.link} onClick={() => { this.imageSelected(index) }} />
+                                                <Draggable bounds="parent" onStop={this.imageDragStopped}>
+                                                <img key={index} src={image.link} onClick={() => { this.imageSelected(index) }} /></Draggable>
                                             ))}
                                         </div>
                                     </div>

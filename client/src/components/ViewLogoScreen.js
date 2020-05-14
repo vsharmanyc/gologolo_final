@@ -137,7 +137,7 @@ class ViewLogoScreen extends Component {
                                             position: 'absolute',
                                         }}>
                                             {logo.texts.map((text, index) => (
-                                                <div key={index} onClick={() => { this.textSelected(index) }}
+                                                <div key={index}
                                                     style={{
                                                         color: text.color,
                                                         fontSize: text.fontSize + "pt"
@@ -146,7 +146,7 @@ class ViewLogoScreen extends Component {
                                                 </div>
                                             ))}
                                             {logo.images.map((image, index) => (
-                                                <img key={index} src={image.link} onClick={() => { this.imageSelected(index) }} />
+                                                <img key={index} src={image.link}/>
                                             ))}
                                         </div>
                                     </div>
