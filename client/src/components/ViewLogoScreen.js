@@ -51,8 +51,8 @@ class ViewLogoScreen extends Component {
         if (!email)
             this.props.history.push("/SignIn");
         let logo = {};
-    return (
-            <Query pollInterval={500} query={GET_LOGO} variables={{email: email, logoId: this.props.match.params.id }}>
+        return (
+            <Query pollInterval={500} query={GET_LOGO} variables={{ email: email, logoId: this.props.match.params.id }}>
                 {({ loading, error, data }) => {
                     if (loading) return 'Loading...';
                     if (error) return `Error! ${error.message}`;
@@ -71,12 +71,29 @@ class ViewLogoScreen extends Component {
 
                                     <div className="panel-body">
                                         <dl className="container" id="properties_container">
-                                            <dt>Text:</dt>
-                                            <dd>{logo.workName.replace(/\s/g, '\u00A0')}</dd>
+                                            <dt>Texts:</dt>
+                                            <dd><div style={{ overflowY: "scroll", height: "180px", overflow: "auto", width: "300px" }}>
+                                                {logo.texts.map((text, index) => (<dl style={{ backgroundColor: "#a1cea1", borderStyle: "solid", paddingLeft: "5%" }}>
+                                                    <dt>Text:</dt>
+                                                    <dd><span>{text.text.replace(/\s/g, '\u00A0')}</span></dd>
+                                                    <dt>Color:</dt>
+                                                    <dd><input type="color" value={text.color} disabled />{" " + text.color}
+                                                        <dt>Font Size:</dt>
+                                                        <dd></dd>{text.fontSize}</dd>
+                                                </dl>))}
+                                            </div></dd>
+                                            <dt>Images:</dt>
+                                            <dd>{logo.images.length === 0 ? <p>None</p> : <div style={{ overflowY: "scroll", height: "180px", overflow: "auto", width: "300px" }}>
+                                                {logo.images.map((image, index) => (<dl style={{ backgroundColor: "#a1cea1", borderStyle: "solid", paddingLeft: "5%", overflow: "overlay" }}>
+                                                    <dt>Link:</dt>
+                                                    <dd >{image.link}</dd>
+                                                    <img src={image.link} height="100px" width="100px"></img>
+                                                </dl>))}
+                                            </div>}</dd>
                                             <dt>Background Color:</dt>
-                                            <dd><input type="color" value={logo.backgroundColor} disabled />{" " + data.logo.backgroundColor}</dd>
+                                            <dd><input type="color" value={logo.backgroundColor} disabled />{" " + logo.backgroundColor}</dd>
                                             <dt>Border Color:</dt>
-                                            <dd><input type="color" value={logo.borderColor} disabled />{" " + data.logo.borderColor}</dd>
+                                            <dd><input type="color" value={logo.borderColor} disabled />{" " + logo.borderColor}</dd>
                                             <dt>Border Radius:</dt>
                                             <dd>{logo.borderRadius}</dd>
                                             <dt>Border Width:</dt>
@@ -119,7 +136,18 @@ class ViewLogoScreen extends Component {
                                             overflow: 'auto',
                                             position: 'absolute',
                                         }}>
-                                            {logo.workName.replace(/\s/g, '\u00A0')}
+                                            {logo.texts.map((text, index) => (
+                                                <div key={index} onClick={() => { this.textSelected(index) }}
+                                                    style={{
+                                                        color: text.color,
+                                                        fontSize: text.fontSize + "pt"
+                                                    }}>
+                                                    {text.text.replace(/\s/g, '\u00A0')}
+                                                </div>
+                                            ))}
+                                            {logo.images.map((image, index) => (
+                                                <img key={index} src={image.link} onClick={() => { this.imageSelected(index) }} />
+                                            ))}
                                         </div>
                                     </div>
 
