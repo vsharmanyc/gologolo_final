@@ -3,6 +3,8 @@ import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import { Link } from 'react-router-dom';
 import Draggable, { DraggableCore } from 'react-draggable';
+import { Resizable, ResizableBox } from 'react-resizable';
+import { Rnd } from 'react-rnd';
 
 const ADD_LOGO = gql`
     mutation addLogo($email: String!,$logo: logoInput!){
@@ -36,8 +38,10 @@ class CreateLogoScreen extends Component {
             selectedImageKey: -1,
             images: [{
                 link: "https://is4-ssl.mzstatic.com/image/thumb/Purple115/v4/15/59/29/15592964-85f9-e103-c628-95cd237a3067/source/256x256bb.jpg",
-                x: 0,
-                y: 0
+                x: 100,
+                y: 100,
+                height: 200,
+                width: 200
             }],
             backgroundColor: "#77ffe3",
             borderColor: "#000000",
@@ -45,6 +49,9 @@ class CreateLogoScreen extends Component {
             borderWidth: 5,
             padding: 5,
             margin: 5,
+            width: 500,
+            height: 500,
+            disableDrag: "false"
         }
     }
 
@@ -134,24 +141,38 @@ class CreateLogoScreen extends Component {
         this.forceUpdate();
     }
 
-    textDragStopped = (event) =>{
-        if(this.state.selectedTextKey !== -1){
-            let texts =  this.state.texts;
+    textDragStopped = (event) => {
+        if (this.state.selectedTextKey !== -1) {
+            let texts = this.state.texts;
             texts[this.state.selectedTextKey].x = event.x;
             texts[this.state.selectedTextKey].y = event.y;
-            this.setState({texts: texts});
+            this.setState({ texts: texts });
         }
     }
 
-    imageDragStopped = (event) =>{
-        if(this.state.selectedImageKey !== -1){
-            let images =  this.state.images;
-            images[this.state.selectedImageKey].x = event.x;
-            images[this.state.selectedImageKey].y = event.y;
-            this.setState({images: images});
+    imageDrag = (event, d) => {
+        if (this.state.selectedImageKey !== -1) {
+            let images = this.state.images;
+            images[this.state.selectedImageKey].x = d.x;
+            images[this.state.selectedImageKey].y = d.y;
+            this.setState({ images: images });
         }
     }
-    
+
+    imageResize = (e, direction, ref, delta, position) => {
+        let index = this.state.selectedImageKey;
+        if (index !== -1) {
+            let images = this.state.images;
+            images[index].width = ref.offsetWidth;
+            images[index].height = ref.offsetHeight;
+            this.setState({ images: images });
+        }
+    }
+
+    onResize = (event, { element, size, handle }) => {
+        this.setState({ width: size.width, height: size.height });
+    }
+
 
     render() {
         let email = localStorage.getItem('signedInUser');
@@ -299,33 +320,69 @@ class CreateLogoScreen extends Component {
                                         {error && <p>Error :( Please try again</p>}
                                     </div>
 
-                                    <div className="col s8">
-                                        <div style={{
-                                            backgroundColor: this.state.backgroundColor,
-                                            borderColor: this.state.borderColor,
-                                            borderRadius: this.state.borderRadius + "pt",
-                                            borderWidth: this.state.borderWidth + "pt",
-                                            borderStyle: "solid",
-                                            padding: this.state.padding + "pt",
-                                            margin: this.state.margin + "pt",
-                                            position: 'absolute',
-                                        }}>
-                                            {this.state.texts.map((text, index) => (
-                                                <Draggable bounds="parent" onStop={this.textDragStopped}>
-                                                    <div key={index} onClick={() => { this.textSelected(index) }}
-                                                        style={{
-                                                            color: text.color,
-                                                            fontSize: text.fontSize + "pt",
-                                                            display:"inline-block"
-                                                        }}>
-                                                        {text.text.replace(/\s/g, '\u00A0')}
-                                                    </div></Draggable>
-                                            ))}
-                                            {this.state.images.map((image, index) => (
-                                                <Draggable bounds="parent" onStop={this.imageDragStopped}>
-                                                <img key={index} src={image.link} onClick={() => { this.imageSelected(index) }} /></Draggable>
-                                            ))}
-                                        </div>
+                                    <div className="col s8" style={{display: "flex"}}>
+                                        <Resizable className="box" height={this.state.height} width={this.state.width} onResize={this.onResize} resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
+                                            <div className="box" style={{
+                                                backgroundColor: this.state.backgroundColor,
+                                                borderColor: this.state.borderColor,
+                                                borderRadius: this.state.borderRadius + "pt",
+                                                borderWidth: this.state.borderWidth + "pt",
+                                                borderStyle: "solid",
+                                                padding: this.state.padding + "pt",
+                                                margin: this.state.margin + "pt",
+                                                height: this.state.height + "px",
+                                                width: this.state.width + "px",
+                                                position: 'absolute',
+                                            }}>
+                                                {this.state.texts.map((text, index) => (
+                                                    <Draggable bounds="parent" onStop={this.textDragStopped}>
+                                                        <div key={index} onClick={() => { this.textSelected(index) }}
+                                                            style={{
+                                                                color: text.color,
+                                                                fontSize: text.fontSize + "pt",
+                                                                display: "inline-block"
+                                                            }}>
+                                                            {text.text.replace(/\s/g, '\u00A0')}
+                                                        </div></Draggable>
+                                                ))}
+
+                                                {/**this.state.images.map((image, index) => (
+                                                    <Draggable bounds="parent" disabled={this.disableDrag} onStart={() => { this.imageSelected(index) }} onStop={this.imageDragStopped} >
+                                                        <Resizable className="box" height={image.height} width={image.width} onResize={(event, { element, size, handle }) => {
+                                                            let images = this.state.images;
+                                                            images[index].width = size.width;
+                                                            images[index].height = size.height;
+                                                            this.setState({ images: images, selectedImageKey: index, disableDrag: "true" });
+                                                            this.imageSelected(index);
+                                                        }} onResizeStart={(e) => { this.setState({ disableDrag: "true" }); this.imageSelected(index); }} onResizeStop={(e) => { this.setState({ disableDrag: "false" }) }}
+                                                            resizeHandles={['sw', 'se', 'nw', 'ne', 'w', 'e', 'n', 's']}>
+                                                            <div className="box" style={{ display: "inline-block" }}>
+
+                                                                <img key={index} src={image.link} width={image.width} height={image.height} onClick={() => { this.imageSelected(index) }} />
+
+                                                            </div>
+                                                        </Resizable></Draggable>
+                                                    ))*/}
+                                                {this.state.images.map((image, index) => (
+                                                    <Rnd
+                                                        bounds= '.col'
+                                                        minWidth="10"
+                                                        minHeight="10"
+                                                        size={{ width: image.width, height: image.height }}
+                                                        position={{ x: image.x, y: image.y }}
+                                                        onDragStart={() => { this.imageSelected(index) }}
+                                                        onResizeStart={() => { this.imageSelected(index) }}
+                                                        onDrag={this.imageDrag}
+                                                        onDragStop={this.imageDrag}
+                                                        onResize={this.imageResize}
+                                                        onResizeStop={this.imageResize}
+                                                        style={{display: "flex"}}
+                                                    >
+                                                        <img src={image.link} width={image.width} heigth={image.height} onClick={() => { this.imageSelected(index) }} />
+                                                    </Rnd>
+                                                ))}
+                                            </div>
+                                        </Resizable>
                                     </div>
 
                                 </div>

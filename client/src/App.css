@@ -120,3 +120,6 @@ dl dd{
 .home_link:hover {
   color: var(--swatch-accent);
 }
+
+@import "../node_modules/react-resizable/css/styles.css";
+@import "../node_modules/react-grid-layout/css/styles.css";
