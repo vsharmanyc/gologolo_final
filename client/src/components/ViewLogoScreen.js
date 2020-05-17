@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import '../App.css';
 import gql from 'graphql-tag';
 import { Query, Mutation } from 'react-apollo';
+import { Rnd } from 'react-rnd';
 
 const GET_LOGO = gql`
     query logo($email: String!, $logoId: String!) {
@@ -14,6 +15,8 @@ const GET_LOGO = gql`
                     link
                     x
                     y
+                    width
+                    height
                 }
                 texts{    
                     text
@@ -51,6 +54,16 @@ class ViewLogoScreen extends Component {
         if (!email)
             this.props.history.push("/SignIn");
         let logo = {};
+        let disabledResize = {
+            bottom: false,
+            bottomLeft: false,
+            bottomRight: false,
+            left: false,
+            right: false,
+            top: false,
+            topLeft: false,
+            topRight: false
+        };
         return (
             <Query pollInterval={500} query={GET_LOGO} variables={{ email: email, logoId: this.props.match.params.id }}>
                 {({ loading, error, data }) => {
@@ -71,8 +84,10 @@ class ViewLogoScreen extends Component {
 
                                     <div className="panel-body">
                                         <dl className="container" id="properties_container">
+                                            <dt>Work Name:</dt>
+                                            <dd>{logo.workName}</dd>
                                             <dt>Texts:</dt>
-                                            <dd><div style={{ overflowY: "scroll", height: "180px", overflow: "auto", width: "300px" }}>
+                                            <dd>{logo.texts.length === 0 ? <p>None</p> : <div style={{ overflowY: "scroll", height: "180px", overflow: "auto", width: "300px" }}>
                                                 {logo.texts.map((text, index) => (<dl style={{ backgroundColor: "#a1cea1", borderStyle: "solid", paddingLeft: "5%" }}>
                                                     <dt>Text:</dt>
                                                     <dd><span>{text.text.replace(/\s/g, '\u00A0')}</span></dd>
@@ -81,7 +96,7 @@ class ViewLogoScreen extends Component {
                                                         <dt>Font Size:</dt>
                                                         <dd></dd>{text.fontSize}</dd>
                                                 </dl>))}
-                                            </div></dd>
+                                            </div>}</dd>
                                             <dt>Images:</dt>
                                             <dd>{logo.images.length === 0 ? <p>None</p> : <div style={{ overflowY: "scroll", height: "180px", overflow: "auto", width: "300px" }}>
                                                 {logo.images.map((image, index) => (<dl style={{ backgroundColor: "#a1cea1", borderStyle: "solid", paddingLeft: "5%", overflow: "overlay" }}>
@@ -125,29 +140,43 @@ class ViewLogoScreen extends Component {
                                     </div>
 
                                     <div className="col s8">
-                                        <div style={{
-                                            backgroundColor: logo.backgroundColor,
-                                            borderColor: logo.borderColor,
-                                            borderRadius: logo.borderRadius + "pt",
-                                            borderWidth: logo.borderWidth + "pt",
-                                            borderStyle: "solid",
-                                            padding: logo.padding + "pt",
-                                            margin: logo.margin + "pt",
-                                            overflow: 'auto',
-                                            position: 'absolute',
-                                        }}>
+                                        <div className="box"
+                                            style={{
+                                                backgroundColor: logo.backgroundColor,
+                                                borderColor: logo.borderColor,
+                                                borderRadius: logo.borderRadius + "pt",
+                                                borderWidth: logo.borderWidth + "pt",
+                                                borderStyle: "solid",
+                                                padding: logo.padding + "pt",
+                                                margin: logo.margin + "pt",
+                                                position: 'absolute'
+                                            }}>
+
                                             {logo.texts.map((text, index) => (
-                                                <div key={index}
+                                                <Rnd bounds=".box"
+                                                    key={index}
+                                                    enableResizing={disabledResize}
+                                                    position={{ x: text.x, y: text.y }}
                                                     style={{
                                                         color: text.color,
                                                         fontSize: text.fontSize + "pt"
                                                     }}>
                                                     {text.text.replace(/\s/g, '\u00A0')}
-                                                </div>
+                                                </Rnd>
                                             ))}
+
                                             {logo.images.map((image, index) => (
-                                                <img key={index} src={image.link}/>
+                                                <Rnd
+                                                    bounds=".box"
+                                                    disableDragging="true"
+                                                    enableResizing={disabledResize}
+                                                    size={{ width: image.width, height: image.height }}
+                                                    position={{ x: image.x, y: image.y }}
+                                                >
+                                                    <img src={image.link} width={image.width + ""} height={image.height + ""} />
+                                                </Rnd>
                                             ))}
+
                                         </div>
                                     </div>
 

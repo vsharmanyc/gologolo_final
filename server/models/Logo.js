@@ -10,7 +10,9 @@ var LogoSchema = new mongoose.Schema({
     images: [{
       link: String,
       x: Number,
-      y: Number
+      y: Number,
+      height: Number,
+      width: Number
     }],
     texts: [{
       text: String,

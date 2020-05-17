@@ -23,6 +23,12 @@ var imageType = new GraphQLObjectType({
             },
             y: {
                 type: GraphQLInt
+            },
+            width: {
+                type: GraphQLInt
+            },
+            height: {
+                type: GraphQLInt
             }
         }
     }
@@ -166,7 +172,9 @@ var imageInput = new GraphQLInputObjectType({
     fields: {
         link: { type: new GraphQLNonNull(GraphQLString) },
         x: { type: new GraphQLNonNull(GraphQLInt) },
-        y: { type: new GraphQLNonNull(GraphQLInt) }
+        y: { type: new GraphQLNonNull(GraphQLInt) },
+        width: { type: new GraphQLNonNull(GraphQLInt) },
+        height: { type: new GraphQLNonNull(GraphQLInt) }
     }
 });
 
