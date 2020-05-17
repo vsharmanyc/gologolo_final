@@ -4,6 +4,7 @@ import '../App.css';
 import gql from 'graphql-tag';
 import { Query, Mutation } from 'react-apollo';
 import { Rnd } from 'react-rnd';
+import html2canvas from 'html2canvas'
 
 const GET_LOGO = gql`
     query logo($email: String!, $logoId: String!) {
@@ -47,7 +48,30 @@ const DELETE_LOGO = gql`
   }
 `;
 
+
 class ViewLogoScreen extends Component {
+    constructor(props) {
+        super(props);
+
+        // WE'LL MANAGE THE UI CONTROL
+        // VALUES HERE
+        this.state = {
+            showModal: false,
+            imageData: null
+        }
+    }
+
+    exportLogo = (event) => {
+        html2canvas(document.querySelector("#logo")).then(canvas => {
+            let imageData = canvas.toDataURL('image/png');
+            this.setState({ showModal: true, imageData: imageData });
+        })
+    }
+
+    downloadImage = (event) => {
+        let logoImage = new Image();
+        logoImage.src = this.state.imageData;
+    }
 
     render() {
         let email = localStorage.getItem('signedInUser');
@@ -80,7 +104,29 @@ class ViewLogoScreen extends Component {
                                         pathname: '/',
                                         state: { screenName: "CreateLogoScreen" }
                                     }} class="home_link">GoLogoLo Home</Link></h4>
-                                    <h3 className="container">View Logo</h3>
+                                    <div className="container row">
+                                        <h3 className="container col">View Logo</h3>
+                                        <button type="button" class="btn btn-info btn-lg" onClick={this.exportLogo}>Export Logo</button>
+                                        {this.state.showModal ? <div
+                                            className={'modal fade show'}
+                                            tabIndex="-1"
+                                            role="dialog"
+                                            aria-hidden="true"
+                                            style={{ display: "inline-block", textAlign: "center" }}
+                                        >
+                                            <div className="modal-dialog" role="document" >
+                                                <div className="modal-content" style={{ padding: "5%"}}>
+                                                    <h3>Your Logo has been exported</h3>
+                                                    <div>
+                                                        <a href={this.state.imageData} download={`${logo.workName}.png`} style={{ paddingRight: "10px" }}>
+                                                            <button class="btn btn-primary">Download</button>
+                                                        </a>
+                                                        <button class="btn btn-primary" onClick={() => this.setState({ showModal: false })}>Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> : <></>}
+                                    </div>
 
                                     <div className="panel-body">
                                         <dl className="container" id="properties_container">
@@ -138,9 +184,8 @@ class ViewLogoScreen extends Component {
                                             )}
                                         </Mutation>
                                     </div>
-
                                     <div className="col s8">
-                                        <div className="box"
+                                        <div id="logo" className="box"
                                             style={{
                                                 backgroundColor: logo.backgroundColor,
                                                 borderColor: logo.borderColor,
