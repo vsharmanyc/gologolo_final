@@ -11,6 +11,7 @@ query user($email: String) {
         logos {
             _id
             workName
+            lastUpdate
         }
     }
 }
@@ -74,8 +75,12 @@ class HomeScreen extends Component {
                         <Query pollInterval={500} query={GET_LOGOS} variables={{ email: email }}>
                             {({ loading, error, data }) => {
                                 console.log(data);
-                                if (data.user)
-                                    data.user.logos.sort((a, b) => new Date(b.lastUpdate) - new Date(a.lastUpdate));
+                                if (data.user){
+                                    console.log(data.user.logos);
+                                    let logos = data.user.logos;
+                                    logos.sort((a, b) => new Date(b.lastUpdate) - new Date(a.lastUpdate));
+                                    console.log(logos);
+                                }
                                 if (loading) return 'Loading...';
                                 if (error) return `Error! ${error.message}`;
 
