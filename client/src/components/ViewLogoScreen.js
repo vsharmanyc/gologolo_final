@@ -66,7 +66,7 @@ class ViewLogoScreen extends Component {
             useCORS: true,
             proxy: "Server"
         }).then(canvas => {
-            let imageData = canvas.toDataURL('image/png');
+            let imageData = canvas.toDataURL('image/jpeg');
             this.setState({ showModal: true, imageData: imageData });
         })
     }
@@ -98,6 +98,7 @@ class ViewLogoScreen extends Component {
                     if (loading) return 'Loading...';
                     if (error) return `Error! ${error.message}`;
                     logo = data.logo.logos[0];
+                    console.log(data);
 
                     return (!data ? <></> :
                         <div className="container">
@@ -222,7 +223,7 @@ class ViewLogoScreen extends Component {
                                                     size={{ width: image.width, height: image.height }}
                                                     position={{ x: image.x, y: image.y }}
                                                 >
-                                                    <img src={image.link} width={image.width + ""} height={image.height + ""} crossorigin="anonymous"/>
+                                                    <img src={image.link} width={image.width + ""} height={image.height + ""} />
                                                 </Rnd>
                                             ))}
 

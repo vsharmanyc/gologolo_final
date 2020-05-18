@@ -51,7 +51,6 @@ class CreateLogoScreen extends Component {
             margin: 5,
             width: 500,
             height: 500,
-            disableDrag: "false"
         }
     }
 
@@ -180,7 +179,7 @@ class CreateLogoScreen extends Component {
                         console.log(data);
                         this.props.history.push({
                             pathname: `/view/${data.addLogo.logos[data.addLogo.logos.length - 1]._id}`,
-                            state: { screenName: "HomeScreen" },
+                            state: { screenName: "CreateScreen" },
                         });
                     }
                     return (

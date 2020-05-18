@@ -299,6 +299,35 @@ var mutation = new GraphQLObjectType({
                     return LogoModel.findOneAndUpdate({'email': params.email}, {'$push': {'logos': params.logo}}, {new: true});
                 }
             },
+            updateLogo: {
+                type: userType,
+                args: {
+                    email: {
+                        type: new GraphQLNonNull(GraphQLString)
+                    },
+                    logoId: {
+                        type: new GraphQLNonNull(GraphQLString)
+                    },
+                    updatedLogo: {
+                        type: new GraphQLNonNull(logoInput)
+                    }
+                },
+                resolve(root, params) {
+                    LogoModel.update({email: params.email}, {$pull: { logos: { '_id' : params.logoId}}}).exec();
+                    return LogoModel.findOneAndUpdate({'email': params.email}, {'$push': {'logos': params.updatedLogo}}, {new: true});
+                   
+                   
+                     /* this works to update logo but returns it the whole document instead of just the logo updated which is needed
+                       to extract the new logo Id. The above solution deletes the orginal, adds the new logo, and also  returns the
+                       whole document but atleast the new logo will always be the last logo in the logos feild and thus we can get it's new id
+
+                    return LogoModel.findOneAndUpdate({email: params.email , "logos._id": params.logoId },  { 
+                        "$set": {"logos.$": params.updatedLogo}
+                    }, {new: true}).exec();
+                    
+                    */
+                }
+            },
             removeLogo: {
                 type: userType,
                 args: {

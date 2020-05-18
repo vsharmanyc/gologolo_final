@@ -57,7 +57,7 @@ class SignUpScreen extends Component {
                             {(addUser, { loading, error, data }) => {
                                 if (data) {
                                     console.log("email is : " + email.value);
-                                    localStorage.setItem('signedInUser', this.state.email);
+                                    localStorage.setItem('signedInUser', email.value);
                                     this.props.history.push({
                                         pathname: '/',
                                         state: { screenName: "SignUpScreen" }
