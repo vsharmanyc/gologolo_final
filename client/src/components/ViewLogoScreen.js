@@ -62,7 +62,10 @@ class ViewLogoScreen extends Component {
     }
 
     exportLogo = (event) => {
-        html2canvas(document.querySelector("#logo")).then(canvas => {
+        html2canvas(document.querySelector("#logo"), {
+            useCORS: true,
+            proxy: "Server"
+        }).then(canvas => {
             let imageData = canvas.toDataURL('image/png');
             this.setState({ showModal: true, imageData: imageData });
         })
@@ -78,6 +81,7 @@ class ViewLogoScreen extends Component {
         if (!email)
             this.props.history.push("/SignIn");
         let logo = {};
+
         let disabledResize = {
             bottom: false,
             bottomLeft: false,
@@ -115,11 +119,11 @@ class ViewLogoScreen extends Component {
                                             style={{ display: "inline-block", textAlign: "center" }}
                                         >
                                             <div className="modal-dialog" role="document" >
-                                                <div className="modal-content" style={{ padding: "5%"}}>
+                                                <div className="modal-content" style={{ padding: "5%" }}>
                                                     <h3>Your Logo has been exported</h3>
                                                     <div>
                                                         <a href={this.state.imageData} download={`${logo.workName}.png`} style={{ paddingRight: "10px" }}>
-                                                            <button class="btn btn-primary">Download</button>
+                                                            <button class="btn btn-primary"  onClick={() => this.setState({ showModal: false })}>Download</button>
                                                         </a>
                                                         <button class="btn btn-primary" onClick={() => this.setState({ showModal: false })}>Cancel</button>
                                                     </div>
@@ -218,7 +222,7 @@ class ViewLogoScreen extends Component {
                                                     size={{ width: image.width, height: image.height }}
                                                     position={{ x: image.x, y: image.y }}
                                                 >
-                                                    <img src={image.link} width={image.width + ""} height={image.height + ""} />
+                                                    <img src={image.link} width={image.width + ""} height={image.height + ""} crossorigin="anonymous"/>
                                                 </Rnd>
                                             ))}
 
