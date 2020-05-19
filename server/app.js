@@ -7,6 +7,9 @@ var mongoose = require('mongoose');
 var graphqlHTTP = require('express-graphql');
 var schema = require('./graphql/logoSchemas');
 var cors = require("cors");
+var sgMail = require('@sendgrid/mail');
+
+sgMail.setApiKey('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');
 
 mongoose.connect('mongodb://localhost/node-graphql', { promiseLibrary: require('bluebird'), useNewUrlParser: true })
   .then(() =>  console.log('connection successful'))
@@ -14,6 +17,7 @@ mongoose.connect('mongodb://localhost/node-graphql', { promiseLibrary: require('
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var forgotPswEmailRouter = require('./routes/forgotPswEmail');
 
 var app = express();
 
@@ -29,6 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/forgot-password-email', forgotPswEmailRouter);
 app.use('*', cors());
 app.use('/graphql', cors(), graphqlHTTP({
   schema: schema,

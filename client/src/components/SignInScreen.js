@@ -34,6 +34,16 @@ class SignInScreen extends Component {
         }
     }
 
+    sendForgotPasswordEmail = (e) => {
+        /*let to = "vsharma.nyc@gmail.com";
+        let from = "vasu.sharma@stonybrook.edu";
+        let subject = "Test email for GoLogoLo";
+        let text = " Hello, Hope this works";
+
+        fetch(`http://localhost:3000/forgot-password-email?to=${to}&from=${from}&subject=${subject}&text=${text}`)*/
+        console.log(window.location.origin);
+    }
+
     render() {
         if (localStorage.getItem('signedInUser'))
             this.props.history.push("/");
@@ -42,7 +52,7 @@ class SignInScreen extends Component {
             <Mutation mutation={UPDATE_SIGNEDIN}>
                 {(updateSignedIn, { loading, error, data }) => {
                     console.log(data);
-                    if(data){
+                    if (data) {
                         localStorage.setItem('signedInUser', this.state.email);
                         this.props.history.push({
                             pathname: '/',
@@ -73,7 +83,7 @@ class SignInScreen extends Component {
                                 return (
 
                                     <div className="container" id="user_enter_container">
-                                        
+
                                         <div className="container row">
                                             <div className="col s4">
                                                 <h3 id="recent_work_heading">Sign In</h3>
@@ -95,12 +105,12 @@ class SignInScreen extends Component {
                                                             {this.state.email !== "" && !loading && !error && data.user ? <p style={{ color: "red" }}>{"Incorrect password"}</p> : ""}
                                                         </div>
                                                         <button type="submit" class="btn btn-primary">Submit</button>
-                                                        <div style={{ marginTop: '2%' }}>
-                                                            <Link to="/create">Forgot Password?</Link>
-                                                        </div>
                                                     </form>
                                                     {loading && <p>Loading...</p>}
                                                     {error && <p>Error :( Please try again</p>}
+                                                    <div style={{ marginTop: '2%' }}>
+                                                        <Link to="/ChangePassword">Forgot Password?</Link>
+                                                    </div>
                                                 </div>
 
                                             </div>
@@ -111,7 +121,7 @@ class SignInScreen extends Component {
                                     </div>
                                                 </div>
                                                 <div style={{ marginTop: '5%' }}>
-                                                    <Link to="/SignUp"><h3>Sign Up for new account</h3></Link>
+                                                    <Link to="/SignUp"><h3>Sign Up for a new account</h3></Link>
                                                 </div>
                                             </div>
                                         </div>
