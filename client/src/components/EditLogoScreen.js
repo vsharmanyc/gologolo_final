@@ -74,12 +74,12 @@ class EditLogoScreen extends Component {
     }
 
     setStateWithQueryData(data) {
-        for(let i = 0; i < data.texts.length; i++)
+        for (let i = 0; i < data.texts.length; i++)
             delete data.texts[i]["__typename"]
 
-        for(let i = 0; i < data.images.length; i++)
+        for (let i = 0; i < data.images.length; i++)
             delete data.images[i]["__typename"]
-        
+
         this.setState({
             hasQueryData: true,
             texts: data.texts,
@@ -115,7 +115,7 @@ class EditLogoScreen extends Component {
         let textProps = this.state.texts;
 
         let fontSize = parseInt(this.state.fontSize)
-        if(this.state.fontSize === "")
+        if (this.state.fontSize === "")
             fontSize = 20;
 
         textProps.push({ text: this.state.text, color: this.state.color, fontSize: fontSize, x: 0, y: 0 });
@@ -246,7 +246,10 @@ class EditLogoScreen extends Component {
                                                     pathname: '/',
                                                     state: { screenName: "CreateLogoScreen" },
                                                 }} class="home_link">GoLogoLo Home</Link></h4>
-                                                <h3 className="container">Edit Logo</h3>
+                                                <div className="container row">
+                                                    <h3 className="container col">Edit Logo</h3>
+                                                    <h5 style={{ color: "teal", marginRight: "35%" }}>Click, Drag, or Resize to select texts and images</h5>
+                                                </div>
 
                                                 <div className="panel-body">
                                                     <form onSubmit={e => {

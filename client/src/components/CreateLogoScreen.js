@@ -28,20 +28,27 @@ class CreateLogoScreen extends Component {
             fontSize: "",
             selectedTextKey: -1,
             texts: [{
-                text: "GoLogoLo Logo",
+                text: "GoLogoLo",
                 color: "#FF0000",
-                fontSize: 24,
-                x: 0,
-                y: 0
+                fontSize: 37,
+                x: 55,
+                y: 69
+            },
+            {
+                text: "Logo",
+                color: "#FFFFFF",
+                fontSize: 44,
+                x: 321,
+                y: 375
             }],
             imageLink: "",
             selectedImageKey: -1,
             images: [{
                 link: "https://is4-ssl.mzstatic.com/image/thumb/Purple115/v4/15/59/29/15592964-85f9-e103-c628-95cd237a3067/source/256x256bb.jpg",
-                x: 100,
-                y: 100,
-                height: 200,
-                width: 200
+                x: 136,
+                y: 143,
+                height: 252,
+                width: 244
             }],
             backgroundColor: "#77ffe3",
             borderColor: "#000000",
@@ -196,7 +203,10 @@ class CreateLogoScreen extends Component {
                                         pathname: '/',
                                         state: { screenName: "CreateLogoScreen" },
                                     }} class="home_link">GoLogoLo Home</Link></h4>
-                                    <h3 className="container">Create Logo</h3>
+                                    <div className="container row">
+                                        <h3 className="container col">Create Logo</h3>
+                                        <h5 style={{color:"teal", marginRight: "35%"}}>Click, Drag, or Resize to select texts and images</h5>
+                                    </div>
 
                                     <div className="panel-body">
                                         <form onSubmit={e => {
@@ -335,6 +345,7 @@ class CreateLogoScreen extends Component {
                                             {this.state.texts.map((text, index) => (
                                                 <Rnd bounds=".box" onDragStart={() => { this.textSelected(index) }} onDragStop={this.textDragStopped}
                                                     key={index} onClick={() => { this.textSelected(index) }}
+                                                    position={{ x: text.x, y: text.y }}
                                                     style={{
                                                         color: text.color,
                                                         fontSize: text.fontSize + "pt",
