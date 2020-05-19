@@ -205,6 +205,7 @@ class ViewLogoScreen extends Component {
                                             {logo.texts.map((text, index) => (
                                                 <Rnd bounds=".box"
                                                     key={index}
+                                                    disableDragging="true"
                                                     enableResizing={disabledResize}
                                                     position={{ x: text.x, y: text.y }}
                                                     style={{

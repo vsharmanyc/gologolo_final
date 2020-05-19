@@ -34,7 +34,6 @@ class SignInScreen extends Component {
         }
     }
 
-
     render() {
         if (localStorage.getItem('signedInUser'))
             this.props.history.push("/");
@@ -52,12 +51,15 @@ class SignInScreen extends Component {
                     }
 
                     return (
-                        <Query query={GET_PSW} variables={{ email: this.state.email }}>
+                        <Query fetchPolicy="no-cache" query={GET_PSW} variables={{ email: this.state.email }}>
                             {({ loading, error, data }) => {
                                 if (data && data.user) {
                                     bcrypt.compare(this.state.password, data.user.password, async (error, result) => {
                                         if (error) return;
+                                        console.log("entered password : " + this.state.password);
+                                        console.log("stored: " + data.user.password);
                                         if (result) {
+                                            console.log(this.state.password + " isvalid");
                                             updateSignedIn({
                                                 variables: {
                                                     email: this.state.email,

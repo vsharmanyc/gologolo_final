@@ -75,12 +75,8 @@ class HomeScreen extends Component {
                         <Query pollInterval={500} query={GET_LOGOS} variables={{ email: email }}>
                             {({ loading, error, data }) => {
                                 console.log(data);
-                                if (data.user){
-                                    console.log(data.user.logos);
-                                    let logos = data.user.logos;
-                                    logos.sort((a, b) => new Date(b.lastUpdate) - new Date(a.lastUpdate));
-                                    console.log(logos);
-                                }
+                                if (data.user)
+                                    data.user.logos.sort((a, b) => new Date(b.lastUpdate) - new Date(a.lastUpdate));
                                 if (loading) return 'Loading...';
                                 if (error) return `Error! ${error.message}`;
 
@@ -106,7 +102,7 @@ class HomeScreen extends Component {
                                                                     }
                                                                 });
                                                             }}>Sign Out</a>
-                                                            <a class="dropdown-item" href="#">Change Password</a>
+                                                            <a class="dropdown-item" href="/ChangePassword">Change Password</a>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -270,6 +270,24 @@ var mutation = new GraphQLObjectType({
                     });
                 }
             },
+            updatePassword: {
+                type: userType,
+                args: {
+                    email: {
+                        type: new GraphQLNonNull(GraphQLString)
+                    },
+                    password: {
+                        type: new GraphQLNonNull(GraphQLString)
+                    }
+                },
+                resolve(root, params) {
+                    return LogoModel.findOneAndUpdate({'email': params.email}, { 
+                        password: params.password
+                    }, {new: true}, (err, data) => {
+                        if (err) return next(err);
+                    });
+                }
+            },
             removeUser: {
                 type: userType,
                 args: {

@@ -121,7 +121,7 @@ class SignUpScreen extends Component {
                                                         GoLogoLo
                                                                </div>
                                                     <div style={{ marginTop: '5%' }}>
-                                                        <Link to="/"><h3>Return to Sign In</h3></Link>
+                                                        <Link to="/SignIn"><h3>Return to Sign In</h3></Link>
                                                     </div>
                                                 </div>
                                             </div>
