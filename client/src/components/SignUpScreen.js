@@ -13,8 +13,8 @@ const GET_USERS = gql`
 `;
 
 const ADD_USER = gql`
-  mutation addUser($email: String!, $password: String!, $signedIn: Boolean!) {
-    addUser(email: $email, password: $password, signedIn: $signedIn) {
+  mutation addUser($email: String!, $password: String!, $pswResetCode: String!, $signedIn: Boolean!) {
+    addUser(email: $email, password: $password, pswResetCode: $pswResetCode, signedIn: $signedIn) {
       email
     }
   }
@@ -84,7 +84,8 @@ class SignUpScreen extends Component {
                                                                         variables: {
                                                                             email: emailVal,
                                                                             password: hash,
-                                                                            signedIn: true
+                                                                            pswResetCode: "",
+                                                                            signedIn: true,
                                                                         }
                                                                     });
                                                                 })

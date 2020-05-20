@@ -89,6 +89,7 @@ class CreateLogoScreen extends Component {
         textProps.push({ text: this.state.text, color: this.state.color, fontSize: fontSize, x: 0, y: 0 });
         this.setState({ texts: textProps, text: "", color: "#000000", fontSize: "", selectedTextKey: -1 });
     }
+    
 
     deleteText = (event) => {
         let textProps = this.state.texts;

@@ -109,7 +109,7 @@ class SignInScreen extends Component {
                                                     {loading && <p>Loading...</p>}
                                                     {error && <p>Error :( Please try again</p>}
                                                     <div style={{ marginTop: '2%' }}>
-                                                        <Link to="/ChangePassword">Forgot Password?</Link>
+                                                        <Link to="/ForgotPassword">Forgot Password?</Link>
                                                     </div>
                                                 </div>
 

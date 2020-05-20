@@ -108,7 +108,10 @@ var userType = new GraphQLObjectType({
             },
             password: {
                 type: GraphQLString
-            },            
+            },
+            pswResetCode: {
+                type: GraphQLString
+            },                     
             signedIn: {
                 type: GraphQLBoolean
             },
@@ -217,6 +220,9 @@ var mutation = new GraphQLObjectType({
                     password: {
                         type: new GraphQLNonNull(GraphQLString)
                     },
+                    pswResetCode: {
+                        type: new GraphQLNonNull(GraphQLString)
+                    },
                     signedIn: {
                         type: new GraphQLNonNull(GraphQLBoolean)
                     }
@@ -283,6 +289,24 @@ var mutation = new GraphQLObjectType({
                 resolve(root, params) {
                     return LogoModel.findOneAndUpdate({'email': params.email}, { 
                         password: params.password
+                    }, {new: true}, (err, data) => {
+                        if (err) return next(err);
+                    });
+                }
+            },
+            updatePswResetCode: {
+                type: userType,
+                args: {
+                    email: {
+                        type: new GraphQLNonNull(GraphQLString)
+                    },
+                    pswResetCode: {
+                        type: new GraphQLNonNull(GraphQLString)
+                    }
+                },
+                resolve(root, params) {
+                    return LogoModel.findOneAndUpdate({'email': params.email}, { 
+                        pswResetCode: params.pswResetCode
                     }, {new: true}, (err, data) => {
                         if (err) return next(err);
                     });
