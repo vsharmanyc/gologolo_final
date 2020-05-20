@@ -207,7 +207,15 @@ class EditLogoScreen extends Component {
         this.setState({ width: ref.offsetWidth, height: ref.offsetHeight });
     }
 
+    reorderText(change) {
+        let texts = this.state.texts;
+        let current = texts[this.state.selectedTextKey]
+        let replaceIndex = this.state.selectedTextKey + change;
+        texts[this.state.selectedTextKey] = texts[replaceIndex];
+        texts[replaceIndex] = current;
 
+        this.setState({texts: texts, selectedTextKey: replaceIndex});
+    }
 
     render() {
         let email = localStorage.getItem('signedInUser');
@@ -309,6 +317,12 @@ class EditLogoScreen extends Component {
                                                                     <button disabled={this.state.selectedTextKey === -1} onClick={this.deselectText}>deselect</button>
                                                                     <button disabled={this.state.selectedTextKey === -1} onClick={this.deleteText}>delete</button>
                                                                     <button disabled={this.state.selectedTextKey >= 0 || !this.state.text.match(/.*[^\s].*/)} onClick={this.addText}>add</button>
+                                                                </div>
+                                                                <div>
+                                                                    <button disabled={this.state.selectedTextKey === -1 || this.state.selectedTextKey === this.state.texts.length - 1}
+                                                                        onClick={(e) => { e.preventDefault(); this.reorderText(1) }}>foward</button>
+                                                                    <button disabled={this.state.selectedTextKey === -1 || this.state.selectedTextKey === 0}
+                                                                        onClick={(e) => { e.preventDefault(); this.reorderText(-1) }}>backward</button>
                                                                 </div>
                                                             </div>
                                                             <div id="group_properties_container">

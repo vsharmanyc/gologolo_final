@@ -67,7 +67,7 @@ class CreateLogoScreen extends Component {
         if (this.state.selectedTextKey >= 0) {
             let textProps = this.state.texts;
             let value = event.target.value;
-            if(event.target.name === "fontSize")
+            if (event.target.name === "fontSize")
                 value = parseInt(value);
             textProps[this.state.selectedTextKey][event.target.name] = value;
             this.setState({ texts: textProps, [event.target.name]: value })
@@ -80,13 +80,13 @@ class CreateLogoScreen extends Component {
         let textProps = this.state.texts;
 
         let fontSize = parseInt(this.state.fontSize)
-        if(this.state.fontSize === "")
+        if (this.state.fontSize === "")
             fontSize = 20;
 
         textProps.push({ text: this.state.text, color: this.state.color, fontSize: fontSize, x: 0, y: 0 });
         this.setState({ texts: textProps, text: "", color: "#000000", fontSize: "", selectedTextKey: -1 });
     }
-    
+
 
     deleteText = (event) => {
         let textProps = this.state.texts;
@@ -174,6 +174,16 @@ class CreateLogoScreen extends Component {
         this.setState({ width: ref.offsetWidth, height: ref.offsetHeight });
     }
 
+    reorderText(change) {
+        let texts = this.state.texts;
+        let current = texts[this.state.selectedTextKey]
+        let replaceIndex = this.state.selectedTextKey + change;
+        texts[this.state.selectedTextKey] = texts[replaceIndex];
+        texts[replaceIndex] = current;
+
+        this.setState({texts: texts, selectedTextKey: replaceIndex});
+    }
+
 
     render() {
         let email = localStorage.getItem('signedInUser');
@@ -202,7 +212,7 @@ class CreateLogoScreen extends Component {
                                     }} class="home_link">GoLogoLo Home</Link></h4>
                                     <div className="container row">
                                         <h3 className="container col">Create Logo</h3>
-                                        <h5 style={{color:"teal", marginRight: "35%"}}>Click, Drag, or Resize to select texts and images</h5>
+                                        <h5 style={{ color: "teal", marginRight: "35%" }}>Click, Drag, or Resize to select texts and images</h5>
                                     </div>
 
                                     <div className="panel-body">
@@ -210,7 +220,7 @@ class CreateLogoScreen extends Component {
                                             e.preventDefault();
                                             let workName = "";
                                             this.state.texts.forEach((textObject) => { workName += textObject.text });
-                                            if(workName === "")
+                                            if (workName === "")
                                                 workName = "Untitled"
                                             addLogo({
                                                 variables: {
@@ -265,6 +275,12 @@ class CreateLogoScreen extends Component {
                                                         <button disabled={this.state.selectedTextKey === -1} onClick={this.deselectText}>deselect</button>
                                                         <button disabled={this.state.selectedTextKey === -1} onClick={this.deleteText}>delete</button>
                                                         <button disabled={this.state.selectedTextKey >= 0 || !this.state.text.match(/.*[^\s].*/)} onClick={this.addText}>add</button>
+                                                    </div>
+                                                    <div>
+                                                        <button disabled={this.state.selectedTextKey === -1 || this.state.selectedTextKey === this.state.texts.length-1} 
+                                                        onClick={(e) => {e.preventDefault(); this.reorderText(1)}}>foward</button>
+                                                        <button disabled={this.state.selectedTextKey === -1 || this.state.selectedTextKey === 0} 
+                                                        onClick={(e) => {e.preventDefault(); this.reorderText(-1)}}>backward</button>
                                                     </div>
                                                 </div>
                                                 <div id="group_properties_container">
