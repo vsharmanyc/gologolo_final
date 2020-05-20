@@ -56,7 +56,6 @@ class SignUpScreen extends Component {
                         <Mutation mutation={ADD_USER} >
                             {(addUser, { loading, error, data }) => {
                                 if (data) {
-                                    console.log("email is : " + email.value);
                                     localStorage.setItem('signedInUser', email.value);
                                     this.props.history.push({
                                         pathname: '/',

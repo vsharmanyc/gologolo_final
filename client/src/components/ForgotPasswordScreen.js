@@ -44,7 +44,6 @@ class ForgotPasswordScreenEdit extends Component {
     }
 
     onVerifyComplete = (data) => {
-        console.log(data);
 
         fetch(`http://localhost:3000/forgot-password-email?to=${data.email}&pswResetCode=${data.pswResetCode}`);
 
@@ -83,7 +82,6 @@ class ForgotPasswordScreenEdit extends Component {
                         {(updatePassword, { loading, error, data }) => {
 
                             if (data && !this.state.showPasswordChangedModal) {
-                                console.log(data)
                                 this.setState({ showPasswordChangedModal: true, wrongPswResetCode: false });
                             }
 
@@ -98,7 +96,6 @@ class ForgotPasswordScreenEdit extends Component {
                                                 let wrongPswResetCode = true;
                                                 if (result) {
                                                     wrongPswResetCode = !result;
-                                                    console.log(result)
                                                 }
 
                                                 let badNewPswError = "";
@@ -119,7 +116,6 @@ class ForgotPasswordScreenEdit extends Component {
                                                                         password: hash
                                                                     }
                                                                 });
-                                                                console.log("new psw hash: " + hash);
                                                             }
                                                         })
                                                     });

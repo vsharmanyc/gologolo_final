@@ -98,7 +98,6 @@ class ViewLogoScreen extends Component {
                     if (loading) return 'Loading...';
                     if (error) return `Error! ${error.message}`;
                     logo = data.logo.logos[0];
-                    console.log(data);
 
                     return (!data ? <></> :
                         <div className="container">

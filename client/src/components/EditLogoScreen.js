@@ -94,7 +94,6 @@ class EditLogoScreen extends Component {
     }
 
     updateLogoView = (event) => {
-        console.log("update logo view");
         this.setState({ [event.target.name]: event.target.value });
     }
 
@@ -216,7 +215,7 @@ class EditLogoScreen extends Component {
             this.props.history.push("/SignIn");
 
         let image, text, color, fontSize, backgroundColor, borderColor, borderRadius, borderWidth, padding, margin;
-        console.log(this.state);
+
         return (
             <Query query={GET_LOGO} variables={{ email: email, logoId: this.props.match.params.id }}>
                 {({ loading, error, data }) => {
@@ -229,8 +228,6 @@ class EditLogoScreen extends Component {
                             {(updateLogo, { loading, error, data }) => {
 
                                 if (data) {
-                                    console.log("hello");
-                                    console.log(data.updateLogo.logos[data.updateLogo.logos.length - 1]._id);
                                     this.props.history.push({
                                         pathname: `/view/${data.updateLogo.logos[data.updateLogo.logos.length - 1]._id}`,
                                         state: { screenName: "EditScreen" },

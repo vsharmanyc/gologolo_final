@@ -46,12 +46,11 @@ class ChangePasswordScreen extends Component {
         if (!email)
             this.props.history.push("/SignIn");
 
-        console.log(this.state)
 
         return (
             <Mutation mutation={UPDATE_PASSWORD}>
                 {(updatePassword, { loading, error, data }) => {
-                    console.log(data);
+
                     if (data && !this.state.showModal) {
                         this.setState({showModal : true});
                     }
@@ -59,8 +58,6 @@ class ChangePasswordScreen extends Component {
                     return (
                         <Query query={GET_PSW} variables={{ email: email }}>
                             {({ loading, error, data }) => {
-
-                                console.log(this.state)
 
                                 return (
 
@@ -95,7 +92,6 @@ class ChangePasswordScreen extends Component {
                                                                 let wrongCurrentPsw = true;
                                                                 if (result) {
                                                                     wrongCurrentPsw = !result;
-                                                                    console.log(result)
                                                                 }
 
                                                                 let badNewPswError = "";
@@ -117,7 +113,7 @@ class ChangePasswordScreen extends Component {
                                                                                     password: hash
                                                                                 }
                                                                             });
-                                                                            console.log("new psw hash: " + hash);
+                                                                            
                                                                         })
                                                                     });
                                                                 }

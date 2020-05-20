@@ -40,12 +40,11 @@ class VerifyEmail extends Component {
     render() {
         let email;
 
-        console.log(this.state)
         return (
             <div>{this.props.disabled ? <></> :
                 <Mutation mutation={UPDATE_PswResetCode}>
                     {(updatePswResetCode, { loading, error, data }) => {
-                        console.log(data);
+
                         if (data && !this.state.emailVerified && this.state.pswResetCode !== "") {
                             this.setState({ emailVerified: true });
                             this.props.onVerifyComplete({
@@ -85,8 +84,6 @@ class VerifyEmail extends Component {
                                                             pswResetCode: hash
                                                         }
                                                     })
-                                                    console.log("emailed psw reset code: " + pswResetCode);
-                                                    console.log("and its hash: " + hash);
                                                     this.setState({ pswResetCode: pswResetCode });
                                                 }
                                             })

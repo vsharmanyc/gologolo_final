@@ -47,7 +47,6 @@ class HomeScreen extends Component {
     closeDropDownViaEscape = (event) => {
         if (event.key === "Escape" && this.state.dropDownOpen)
             this.setState({ dropDownOpen: false });
-        console.log(event.key);
     }
 
     toggleDropDown = (e) => {
@@ -62,7 +61,6 @@ class HomeScreen extends Component {
         return (!email ? <></> :
             <Mutation mutation={UPDATE_SIGNEDIN}>
                 {(updateSignedIn, { loading, error, data }) => {
-                    console.log(data);
                     if (data) {
                         this.props.history.push({
                             pathname: '/SignIn',
@@ -74,7 +72,6 @@ class HomeScreen extends Component {
 
                         <Query pollInterval={500} query={GET_LOGOS} variables={{ email: email }}>
                             {({ loading, error, data }) => {
-                                console.log(data);
                                 if (data.user)
                                     data.user.logos.sort((a, b) => new Date(b.lastUpdate) - new Date(a.lastUpdate));
                                 if (loading) return 'Loading...';

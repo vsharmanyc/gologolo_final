@@ -60,7 +60,6 @@ class CreateLogoScreen extends Component {
     }
 
     updateLogoView = (event) => {
-        console.log("update logo view");
         this.setState({ [event.target.name]: event.target.value });
     }
 
@@ -182,12 +181,11 @@ class CreateLogoScreen extends Component {
             this.props.history.push("/SignIn");
 
         let image, text, color, fontSize, backgroundColor, borderColor, borderRadius, borderWidth, padding, margin;
-        console.log(this.state);
+
         return (
             <Mutation mutation={ADD_LOGO}>
                 {(addLogo, { loading, error, data }) => {
                     if (data) {
-                        console.log(data);
                         this.props.history.push({
                             pathname: `/view/${data.addLogo.logos[data.addLogo.logos.length - 1]._id}`,
                             state: { screenName: "CreateScreen" },
