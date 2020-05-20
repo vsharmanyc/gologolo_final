@@ -136,7 +136,7 @@ class ViewLogoScreen extends Component {
                                     <div className="panel-body">
                                         <dl className="container" id="properties_container">
                                             <dt>Work Name:</dt>
-                                            <dd>{logo.workName}</dd>
+                                            <dd>{logo.workName.replace(/\s/g, '\u00A0')}</dd>
                                             <dt>Texts:</dt>
                                             <dd>{logo.texts.length === 0 ? <p>None</p> : <div style={{ overflowY: "scroll", height: "180px", overflow: "auto", width: "300px" }}>
                                                 {logo.texts.map((text, index) => (<dl style={{ backgroundColor: "#a1cea1", borderStyle: "solid", paddingLeft: "5%" }}>

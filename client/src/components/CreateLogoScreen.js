@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import { Link } from 'react-router-dom';
-import Draggable from 'react-rnd/node_modules/react-draggable';
-import { Resizable, ResizableBox } from 'react-resizable';
 import { Rnd } from 'react-rnd';
 
 const ADD_LOGO = gql`
