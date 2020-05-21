@@ -184,6 +184,16 @@ class CreateLogoScreen extends Component {
         this.setState({texts: texts, selectedTextKey: replaceIndex});
     }
 
+    reorderImage(change) {
+        let images = this.state.images;
+        let current = images[this.state.selectedImageKey]
+        let replaceIndex = this.state.selectedImageKey + change;
+        images[this.state.selectedImageKey] = images[replaceIndex];
+        images[replaceIndex] = current;
+
+        this.setState({images: images, selectedImageKey: replaceIndex});
+    }
+
 
     render() {
         let email = localStorage.getItem('signedInUser');
@@ -294,6 +304,12 @@ class CreateLogoScreen extends Component {
                                                         <button disabled={this.state.selectedImageKey === -1} onClick={this.deselectImage}>deselect</button>
                                                         <button disabled={this.state.selectedImageKey === -1} onClick={this.deleteImage}>delete</button>
                                                         <button disabled={this.state.selectedImageKey >= 0 || this.state.imageLink.match(/^(?![\s\S])|\s/)} onClick={this.addImage}>add</button>
+                                                    </div>
+                                                    <div>
+                                                        <button disabled={this.state.selectedImageKey === -1 || this.state.selectedImageKey === this.state.images.length-1} 
+                                                        onClick={(e) => {e.preventDefault(); this.reorderImage(1)}}>foward</button>
+                                                        <button disabled={this.state.selectedImageKey === -1 || this.state.selectedImageKey === 0} 
+                                                        onClick={(e) => {e.preventDefault(); this.reorderImage(-1)}}>backward</button>
                                                     </div>
                                                 </div>
                                                 <div id="group_properties_container">
